@@ -1,0 +1,23 @@
+{
+    "name":"SoundCloud Filter",
+    "description":"Filter options to SoundCloud",
+    "version":"1.2",
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+            "matches": ["http://soundcloud.com/stream","https://soundcloud.com/stream"],
+            "js": ["jquery.min.js", "plus.js"],
+            "css": ["plus.css"]
+        }
+    ],
+    
+    "icons": { 
+		"16": "img/icon16.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png" 
+	},
+	
+	"web_accessible_resources": [
+		"img/icon128.png"
+	]
+}

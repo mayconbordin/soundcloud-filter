@@ -1,0 +1,94 @@
+#soundcloud-plus-bar {
+    z-index:900;
+    position: fixed;
+    top: 46px;
+    border-top: 1px solid #2a2a2a;
+    background: url(https://a-v2.sndcdn.com/assets/images/header/header-bg-d50908.png) repeat-x 0 0;
+    height: 25px;
+    padding: 5px;
+    width: 100%;
+    
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+}
+
+#soundcloud-plus-bar .inner {
+    width: 1240px;
+    margin: 0 auto;
+}
+
+#soundcloud-plus-bar label {
+    color:white;
+    font-weight:bold;
+    margin-left:10px;
+}
+
+#soundcloud-plus-filter-type {
+    border-radius: 3px;
+    height: 26px;
+    margin: 0 0 0 10px;
+}
+
+#soundcloud-plus-search {
+    border-radius:3px;
+    height: 20px;
+    margin: 0 0 0 10px;
+    padding: 2px;
+}
+
+#soundcloud-plus-min-counter {
+    width: 60px;
+    border-radius:3px;
+    height: 20px;
+    margin: 0 0 0 10px;
+    padding: 2px;
+}
+
+#soundcloud-plus-counter-type {
+    border-radius: 3px;
+    height: 26px;
+    margin: 0 10px;
+}
+
+#soundcloud-plus-apply {
+    margin: 0 5px 0 0;
+}
+
+.soundcloud-plus-check {
+    display: inline;
+    height: 30px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 3px;
+    width: 60px;
+    margin-right: 5px;
+}
+
+.soundcloud-plus-check input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+.soundcloud-plus-check img {
+    display: inline;
+    position: relative;
+    top: 3px;
+    margin-left: 5px;
+    height: 16px;
+}
+
+#soundcloud-plus-check-reposts label,
+#soundcloud-plus-check-playlists label {
+    margin:0;
+}
+
+#emptyTrack {
+    background-color: #eaeaea;
+    border-radius: 15px;
+    height:1000px;
+}
+
+#emptyTrack p {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Interstate, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Garuda, Verdana, Tahoma, sans-serif;
+    text-align: center;
+}
