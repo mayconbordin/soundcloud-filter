@@ -46,40 +46,89 @@ var searchBarHtml =
     '<button id="soundcloud-plus-reset" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Reset">Reset</button>' +
 '</div></div>';
 
-// Modify DOM
-$("#app header").after(searchBarHtml);
-$(".l-container.l-content").css({'padding-top': '80px'});
-
-$("#soundcloud-plus-search").autocomplete({
-    serviceUrl: 'https://api.soundcloud.com/search/suggest/tags?highlight_mode=offsets',
-    paramName: 'q',
-    ajaxSettings: { dataType: "json" },
-    transformResult: function(response) {
-        return {
-            suggestions: $.map(response.suggestions, function(dataItem) {
-                return { value: dataItem.id, data: dataItem.id };
-            })
-        };
-    }
-});
 
 // State
 var hasFilter = false;
 
-var trackInfo = (function() {
+var app = (function() {
     var store = {};
+    var filter = null;
     
     return {
-        get: function(track) {
+        getTrackInfo: function(track) {
             var id = $(track).find(".soundTitle__title").attr("href").hashCode();
             
             if (!(id in store)) {
                 store[id] = getTrackInfo(track);
             }
             return store[id];
+        },
+        
+        setFilter: function(f) {
+            filter = f;
+        },
+        
+        getFilter: function() {
+            return filter;
         }
     };
 })();
+
+
+// Modify DOM
+$( document ).ready(function() {
+    $("#app header").after(searchBarHtml);
+    $(".l-container.l-content").css({'padding-top': '80px'});
+
+    $("#soundcloud-plus-search").autocomplete({
+        serviceUrl: function(query) {
+            var baseUrl = 'https://api.soundcloud.com/search/suggest/';
+            var args = 'highlight_mode=offsets&limit=10';
+            var type = $("#soundcloud-plus-filter-type").val();
+
+            var resource = 'tags';
+            if (type == 'title') resource = 'sounds';
+            else if (type == 'user') resource = 'people';
+
+            return baseUrl + resource + '?' + args;
+        },
+        paramName: 'q',
+        ajaxSettings: { dataType: "json" },
+        transformResult: function(response) {
+            return {
+                suggestions: $.map(response.suggestions, function(dataItem) {
+                    return { value: dataItem.query, data: dataItem.query };
+                })
+            };
+        }
+    });
+    
+    $("#soundcloud-plus-filter-type").change(function() {
+        $("#soundcloud-plus-search").val("");
+    });
+    
+    // Events
+    $("#soundcloud-plus-apply").click(function() {
+        hasFilter = true;
+        filterStream();
+    });
+
+    $("#soundcloud-plus-reset").click(function() {
+        location.reload();
+    });
+    
+    var observer = new WebKitMutationObserver(function(mutations, observer) {
+        if (hasFilter) {
+            console.log("observer filterStream()");
+            filterStream();
+        }
+    });
+
+    observer.observe($(".stream .lazyLoadingList")[0], {
+      subtree: true,
+      childList: true
+    });
+});
 
 // Functions
 function getInputValue(sel) {
@@ -123,12 +172,14 @@ function getTrackInfo(track) {
 
 function filterStream() {
     var f = getFilterAttrs();
+    app.setFilter(f);
+    
     var hits = 0;
     var items = $(".soundList__item");
     
     items.each(function(i, item) {
         if ($(item).attr("class").indexOf("emptyTrack") != -1) return;
-        var info = trackInfo.get(item);
+        var info = app.getTrackInfo(item);
 
         if ((f.keyword == null || info[f.filterType].toLowerCase().indexOf(f.keyword) != -1)
             && (f.counter == null || info[f.counterType] >= f.counter)
@@ -158,22 +209,4 @@ function filterStream() {
 }
 
 
-// Events
-$("#soundcloud-plus-apply").click(function() {
-    hasFilter = true;
-    filterStream();
-});
 
-$("#soundcloud-plus-reset").click(function() {
-    location.reload();
-});
-
-
-var observer = new WebKitMutationObserver(function(mutations, observer) {
-    if (hasFilter) filterStream();
-});
-
-observer.observe(document, {
-  subtree: true,
-  childList: true
-});
