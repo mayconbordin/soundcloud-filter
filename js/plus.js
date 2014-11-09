@@ -15,35 +15,49 @@ var playlistIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAA
 
 var searchBarHtml = 
 '<div id="soundcloud-plus-bar"><div class="inner">' +
-    '<label>Filter by</label>' +
-    '<select id="soundcloud-plus-filter-type">' +
-        '<option value="tag">Tag</option>' +
-        '<option value="title">Title</option>' +
-        '<option value="user">User</option>' +
-    '</select>' +
-    '<input id="soundcloud-plus-search" name="soundcloud-plus-search"/>' +
-    '<label>at least</label>' +
-    '<input type="number" id="soundcloud-plus-min-counter" name="soundcloud-plus-min-counter"/>' +
-    '<select id="soundcloud-plus-counter-type">' +
-        '<option value="plays">Plays</option>' +
-        '<option value="likes">Likes</option>' +
-        '<option value="comments">Comments</option>' +
-        '<option value="reposts">Reposts</option>' +
-    '</select>' +
-    
-    '<div id="soundcloud-plus-check-reposts" class="soundcloud-plus-check">' +
-        '<input id="reposts-checkbox" type="checkbox" name="reposts" value="reposts"/>' +
-        '<label for="reposts-checkbox" title="Include reposted tracks"><img alt="Reposts" src="'+repostIcon+'" /></label>' +
+    '<div class="left">' +
+        '<label>Filter by</label>' +
+        '<select id="soundcloud-plus-filter-type">' +
+            '<option value="tag">Tag</option>' +
+            '<option value="title">Title</option>' +
+            '<option value="user">User</option>' +
+        '</select>' +
+        '<input id="soundcloud-plus-search" name="soundcloud-plus-search"/>' +
+        '<label>at least</label>' +
+        '<input type="number" id="soundcloud-plus-min-counter" name="soundcloud-plus-min-counter"/>' +
+        '<select id="soundcloud-plus-counter-type">' +
+            '<option value="plays">Plays</option>' +
+            '<option value="likes">Likes</option>' +
+            '<option value="comments">Comments</option>' +
+            '<option value="reposts">Reposts</option>' +
+        '</select>' +
+        
+        '<div id="soundcloud-plus-check-reposts" class="soundcloud-plus-check">' +
+            '<input id="reposts-checkbox" type="checkbox" name="reposts" value="reposts"/>' +
+            '<label for="reposts-checkbox" title="Include reposted tracks"><img alt="Reposts" src="'+repostIcon+'" /></label>' +
+        '</div>' +
+        
+        '<div id="soundcloud-plus-check-playlists" class="soundcloud-plus-check">' +
+            '<input id="playlists-checkbox" type="checkbox" name="playlists" value="playlists"/>' +
+            '<label for="playlists-checkbox" title="Include playlists"><img alt="Playlists" src="'+playlistIcon+'" /></label>' +
+        '</div>' +
+        
+        '<button id="soundcloud-plus-apply" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Filter">Apply</button>' +
+        
+        '<button id="soundcloud-plus-reset" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Reset">Reset</button>' +
     '</div>' +
     
-    '<div id="soundcloud-plus-check-playlists" class="soundcloud-plus-check">' +
-        '<input id="playlists-checkbox" type="checkbox" name="playlists" value="playlists"/>' +
-        '<label for="playlists-checkbox" title="Include playlists"><img alt="Playlists" src="'+playlistIcon+'" /></label>' +
+    '<div class="right">' +
+        '<select id="soundcloud-plus-sort-field">' +
+            '<option value="plays">Plays</option>' +
+            '<option value="title">Title</option>' +
+            '<option value="user">User</option>' +
+            '<option value="likes">Likes</option>' +
+            '<option value="comments">Comments</option>' +
+            '<option value="reposts">Reposts</option>' +
+        '</select>' +
+        '<button id="soundcloud-plus-sort" class="sort-asc sc-button sc-button-small sc-button-responsive" tabindex="0" title="Sort">Sort</button>' +
     '</div>' +
-    
-    '<button id="soundcloud-plus-apply" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Filter">Apply</button>' +
-    
-    '<button id="soundcloud-plus-reset" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Reset">Reset</button>' +
 '</div></div>';
 
 
@@ -76,7 +90,7 @@ var app = (function() {
 
 
 // Modify DOM
-$( document ).ready(function() {
+//$( document ).ready(function() {
     $("#app header").after(searchBarHtml);
     $(".l-container.l-content").css({'padding-top': '80px'});
 
@@ -117,6 +131,10 @@ $( document ).ready(function() {
         location.reload();
     });
     
+    $("#soundcloud-plus-sort").click(function() {
+        sortStream();
+    });
+    
     var observer = new WebKitMutationObserver(function(mutations, observer) {
         if (hasFilter) {
             console.log("observer filterStream()");
@@ -128,7 +146,7 @@ $( document ).ready(function() {
       subtree: true,
       childList: true
     });
-});
+//});
 
 // Functions
 function getInputValue(sel) {
@@ -175,9 +193,8 @@ function filterStream() {
     app.setFilter(f);
     
     var hits = 0;
-    var items = $(".soundList__item");
     
-    items.each(function(i, item) {
+    $(".soundList__item").each(function(i, item) {
         if ($(item).attr("class").indexOf("emptyTrack") != -1) return;
         var info = app.getTrackInfo(item);
 
@@ -205,6 +222,43 @@ function filterStream() {
     
     if (hits > 10) {
         loader.css({"margin-top":"0px"});
+    }
+}
+
+
+var sorter = null;
+
+function sortStream() {
+    console.log("sortStream");
+    
+    if (sorter == null) sorter = {};
+    
+    sorter.field = $("#soundcloud-plus-sort-field").val();
+    sorter.order = (sorter.order == null || sorter.order == 'desc') ? 'asc' : 'desc';
+    
+    var tracks = $(".soundList__item");
+    tracks.detach();
+    
+    tracks.sort(function(a, b) {
+        var ret = 0;
+        var aInfo = app.getTrackInfo(a);
+        var bInfo = app.getTrackInfo(b);
+        
+        if (aInfo[sorter.field] < bInfo[sorter.field]) ret = -1;
+        else if (aInfo[sorter.field] > bInfo[sorter.field]) ret = 1;
+        
+        return (sorter.order == 'asc') ? ret : -ret;
+    });
+    
+    $(".lazyLoadingList__list").append(tracks);
+    
+    var sortBtn = $("#soundcloud-plus-sort");
+    sortBtn.addClass("sc-button-selected");
+    
+    if (sorter.order == 'asc') {
+        sortBtn.addClass("sort-asc").removeClass("sort-desc");
+    } else {
+        sortBtn.addClass("sort-desc").removeClass("sort-asc");
     }
 }
 
