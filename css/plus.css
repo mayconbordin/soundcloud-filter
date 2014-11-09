@@ -80,15 +80,9 @@
     margin:0;
 }
 
-#emptyTrack {
-    background-color: #eaeaea;
-    border-radius: 15px;
-    height:1000px;
-}
-
-#emptyTrack p {
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Interstate, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Garuda, Verdana, Tahoma, sans-serif;
-    text-align: center;
-}
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }

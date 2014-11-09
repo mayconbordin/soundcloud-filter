@@ -46,11 +46,22 @@ var searchBarHtml =
     '<button id="soundcloud-plus-reset" class="sc-button sc-button-small sc-button-responsive" tabindex="0" title="Reset">Reset</button>' +
 '</div></div>';
 
-var emptyTrackHtml = '<li id="emptyTrack" class="soundList__item emptyTrack"><p>Scroll to load more</p></li>';
-
 // Modify DOM
 $("#app header").after(searchBarHtml);
 $(".l-container.l-content").css({'padding-top': '80px'});
+
+$("#soundcloud-plus-search").autocomplete({
+    serviceUrl: 'https://api.soundcloud.com/search/suggest/tags?highlight_mode=offsets',
+    paramName: 'q',
+    ajaxSettings: { dataType: "json" },
+    transformResult: function(response) {
+        return {
+            suggestions: $.map(response.suggestions, function(dataItem) {
+                return { value: dataItem.id, data: dataItem.id };
+            })
+        };
+    }
+});
 
 // State
 var hasFilter = false;
@@ -129,20 +140,20 @@ function filterStream() {
             $(item).remove();
         }
     });
+    
+    var loader = $(".lazyLoadingList .loading");
 
     if (hits < 10) {
-        // if emptyTrack item is not the last
-        if (items.length > 0 && items.last().attr("class").indexOf("emptyTrack") == -1) {
-            $("#emptyTrack").remove();
+        if (loader.css("margin-top") == "0px") {
+            loader.css({"margin-top":"800px"});
         }
         
-        if ($("#emptyTrack").length == 0) {
-            $("ul.lazyLoadingList__list").append(emptyTrackHtml);
-        }
+        var pos = loader.offset();
+        $(window).scrollTop(pos.top);
     }
     
-    if (hits > 10 && $("#emptyTrack").length != 0) {
-        $("#emptyTrack").remove();
+    if (hits > 10) {
+        loader.css({"margin-top":"0px"});
     }
 }
 

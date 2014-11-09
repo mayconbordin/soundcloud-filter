@@ -6,7 +6,7 @@
     "content_scripts": [
         {
             "matches": ["http://soundcloud.com/stream","https://soundcloud.com/stream"],
-            "js": ["js/jquery.min.js", "js/plus.js"],
+            "js": ["js/jquery.min.js", "js/jquery.autocomplete.min.js", "js/plus.js"],
             "css": ["css/plus.css"]
         }
     ],
