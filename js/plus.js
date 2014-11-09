@@ -63,6 +63,8 @@ var searchBarHtml =
 
 // State
 var hasFilter = false;
+var sorter = null;
+var isSorting = false;
 
 var app = (function() {
     var store = {};
@@ -90,7 +92,7 @@ var app = (function() {
 
 
 // Modify DOM
-//$( document ).ready(function() {
+$( document ).ready(function() {
     $("#app header").after(searchBarHtml);
     $(".l-container.l-content").css({'padding-top': '80px'});
 
@@ -132,21 +134,50 @@ var app = (function() {
     });
     
     $("#soundcloud-plus-sort").click(function() {
+        if (sorter == null) sorter = {};
+    
+        sorter.field = $("#soundcloud-plus-sort-field").val();
+        sorter.order = (sorter.order == null || sorter.order == 'desc') ? 'asc' : 'desc';
         sortStream();
+        var sortBtn = $("#soundcloud-plus-sort");
+        sortBtn.addClass("sc-button-selected");
+        
+        if (sorter.order == 'asc') {
+            sortBtn.addClass("sort-asc").removeClass("sort-desc");
+        } else {
+            sortBtn.addClass("sort-desc").removeClass("sort-asc");
+        }
     });
     
     var observer = new WebKitMutationObserver(function(mutations, observer) {
+        var changes = mutations.filter(function(mutation) {
+            if ($(mutation.target).prop('class').indexOf('lazyLoadingList__list') != -1) {
+                return mutation.target;
+            }
+        });
+        
         if (hasFilter) {
             console.log("observer filterStream()");
             filterStream();
         }
+        
+        
+        if (changes.length > 0 && sorter != null) {
+            observer.disconnect();
+            sortStream();
+            observer.observe($(".stream")[0], {
+              subtree: true,
+              childList: true
+            });
+        }
+        
     });
 
-    observer.observe($(".stream .lazyLoadingList")[0], {
+    observer.observe($(".stream")[0], {
       subtree: true,
       childList: true
     });
-//});
+});
 
 // Functions
 function getInputValue(sel) {
@@ -225,16 +256,9 @@ function filterStream() {
     }
 }
 
-
-var sorter = null;
-
 function sortStream() {
     console.log("sortStream");
     
-    if (sorter == null) sorter = {};
-    
-    sorter.field = $("#soundcloud-plus-sort-field").val();
-    sorter.order = (sorter.order == null || sorter.order == 'desc') ? 'asc' : 'desc';
     
     var tracks = $(".soundList__item");
     tracks.detach();
@@ -252,14 +276,7 @@ function sortStream() {
     
     $(".lazyLoadingList__list").append(tracks);
     
-    var sortBtn = $("#soundcloud-plus-sort");
-    sortBtn.addClass("sc-button-selected");
     
-    if (sorter.order == 'asc') {
-        sortBtn.addClass("sort-asc").removeClass("sort-desc");
-    } else {
-        sortBtn.addClass("sort-desc").removeClass("sort-asc");
-    }
 }
 
 
