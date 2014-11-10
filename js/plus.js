@@ -64,7 +64,6 @@ var searchBarHtml =
 // State
 var hasFilter = false;
 var sorter = null;
-var isSorting = false;
 
 var app = (function() {
     var store = {};
@@ -177,6 +176,21 @@ $( document ).ready(function() {
       subtree: true,
       childList: true
     });
+    
+    $(document).on("urlChange", function() {
+        console.log("url changed");
+    });
+    
+    setInterval((function() {
+        var currentUrl = location.href;
+        
+        return function() {
+            if (location.href != currentUrl) {
+                currentUrl = location.href;
+                $(document).trigger("urlChange");
+            }
+        }
+    })(), 100);
 });
 
 // Functions
