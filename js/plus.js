@@ -149,11 +149,11 @@ $( document ).ready(function() {
     });
     
     var observer = new WebKitMutationObserver(function(mutations, observer) {
-        var changes = mutations.filter(function(mutation) {
+        /*var changes = mutations.filter(function(mutation) {
             if ($(mutation.target).prop('class').indexOf('lazyLoadingList__list') != -1) {
                 return mutation.target;
             }
-        });
+        });*/
         
         if (hasFilter) {
             console.log("observer filterStream()");
@@ -161,19 +161,19 @@ $( document ).ready(function() {
         }
         
         
-        if (changes.length > 0 && sorter != null) {
+        if (/*changes.length > 0 && */sorter != null) {
             observer.disconnect();
             sortStream();
-            observer.observe($(".stream")[0], {
-              subtree: true,
+            observer.observe($(".lazyLoadingList__list")[0], {
+              subtree: false,
               childList: true
             });
         }
         
     });
 
-    observer.observe($(".stream")[0], {
-      subtree: true,
+    observer.observe($(".lazyLoadingList__list")[0], {
+      subtree: false,
       childList: true
     });
     
@@ -219,9 +219,10 @@ function getTrackInfo(track) {
         id: $(track).find(".soundTitle__title").attr("href").hashCode(),
         tag: $(track).find(".soundTitle__tagContent").text(),
         title: $(track).find(".soundTitle__title").text().trim(),
-        user: $(track).find(".soundTitle__username").text(),
+        user: $(track).find(".soundTitle__username").text().trim(),
         isRepost: ($(track).find(".repostingUser").length > 0) ? true : false,
         isTracklist: ($(track).find(".activity .playlist").length > 0) ? true : false,
+        plays: 0, likes: 0, reposts: 0, comments: 0
     };
     
     $(track).find(".sc-ministats-item").each(function(i, item) {
@@ -272,8 +273,7 @@ function filterStream() {
 
 function sortStream() {
     console.log("sortStream");
-    
-    
+
     var tracks = $(".soundList__item");
     tracks.detach();
     
