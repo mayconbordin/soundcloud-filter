@@ -33,7 +33,7 @@ var searchBarHtml =
         '</select>' +
         
         '<div id="soundcloud-plus-check-reposts" class="soundcloud-plus-check">' +
-            '<input id="reposts-checkbox" type="checkbox" name="reposts" value="reposts"/>' +
+            '<input id="reposts-checkbox" type="checkbox" name="reposts" value="reposts" checked="checked"/>' +
             '<label for="reposts-checkbox" title="Include reposted tracks"><img alt="Reposts" src="'+repostIcon+'" /></label>' +
         '</div>' +
         
