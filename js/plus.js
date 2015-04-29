@@ -9,6 +9,8 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
+var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
 var repostIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+c3RhdHNfcmVwb3N0PC90aXRsZT48ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz48cGF0aCBkPSJNMiA2djUuMDAwMzg1YzAgMS4xMDQzNTY5MDAwMDAwMDA5LjkwMTk1MDM1OTk5OTk5OTggMS45OTk2MTUwMDAwMDAwMDA0IDIuMDA4NTMwMiAxLjk5OTYxNTAwMDAwMDAwMDRoNS45OTE0Njk4bC0yLTJoLTR2LTVoMmwtMy0zLTMgM2gyem00LTNoNS45OTE0Njk4MDAwMDAwMDFjMS4xMDY1Nzk3OTk5OTk5OTg3IDAgMi4wMDg1MzAxOTk5OTk5OTkuODk1MjU4MTE5OTk5OTk5OCAyLjAwODUzMDE5OTk5OTk5OSAxLjk5OTYxNDk3OTk5OTk5OTZ2NS4wMDAzODUwMmgtMnYtNWgtNGwtMi0yem0xMCA3aC02bDMgMyAzLTN6IiBmaWxsPSIjOTk5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=';
 
 var playlistIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAK0lEQVQ4T2NgGAUMDMabsEGqaojEgPg1oAM8Goz/Y8JRDcRpwAMGoYaRAwCf8KJH7uiMYQAAAABJRU5ErkJggg==';
@@ -138,6 +140,7 @@ $( document ).ready(function() {
         sorter.field = $("#soundcloud-plus-sort-field").val();
         sorter.order = (sorter.order == null || sorter.order == 'desc') ? 'asc' : 'desc';
         sortStream();
+        
         var sortBtn = $("#soundcloud-plus-sort");
         sortBtn.addClass("sc-button-selected");
         

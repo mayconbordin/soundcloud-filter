@@ -1,5 +1,7 @@
 screenshots/
 tiles/
 vector/
+releases/
+package.py
 
 *.zip
