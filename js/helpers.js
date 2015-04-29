@@ -26,6 +26,27 @@ var Utils = {
     parseInt: function(n) {
         if (n == null) return null;
         return parseInt(n);
+    },
+    
+    isNumeric: function(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+    
+    parseIntegerString: function(numStr) {
+        if (numStr == null || numStr.trim().length == 0)
+            return 0;
+        
+        numStr = numStr.trim().replace(",", "");
+        numStr = numStr.replace(/K|M|G/gi, function(x) {
+            if (x == 'K') return '000';
+            else if (x == 'M') return '000000';
+            else if (x == 'G') return '000000000';
+        });
+        
+        if (!Utils.isNumeric(numStr))
+            return 0;
+    
+        return parseInt(numStr);
     }
 };
 

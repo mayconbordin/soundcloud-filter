@@ -201,7 +201,7 @@ var SoundCloudFilter = (function() {
             $(track).find(".sc-ministats-item").each(function(i, item) {
                 var cItem = $(item).children();
                 var stats = cItem.prop("class").replace(/sc-ministats|small|-/g, "").trim();
-                info[stats] = parseInt(cItem.find("span").eq(1).text().replace(",", "")) || 0;
+                info[stats] = Utils.parseIntegerString(cItem.find("span").eq(1).text());
             });
             
             return info;
