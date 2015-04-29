@@ -1,12 +1,18 @@
 {
     "name":"SoundCloud Filter",
     "description":"Filter options to SoundCloud",
-    "version":"1.3.2",
+    "version":"1.4.0",
     "manifest_version": 2,
     "content_scripts": [
         {
             "matches": ["http://soundcloud.com/stream","https://soundcloud.com/stream"],
-            "js": ["js/jquery.min.js", "js/jquery.autocomplete.min.js", "js/plus.js"],
+            "js": [
+                "js/jquery.min.js",
+                "js/jquery.autocomplete.min.js",
+                "js/helpers.js",
+                "js/view.js",
+                "js/plus.js"
+            ],
             "css": ["css/plus.css"]
         }
     ],

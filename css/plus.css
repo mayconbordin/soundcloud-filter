@@ -67,7 +67,8 @@
     height: 26px;
 }
 
-#soundcloud-plus-filter-type {
+#soundcloud-plus-filter-type,
+#soundcloud-plus-counter-operator {
     margin: 0 0 0 10px;
 }
 
@@ -78,7 +79,7 @@
     padding: 2px;
 }
 
-#soundcloud-plus-min-counter {
+#soundcloud-plus-counter {
     width: 60px;
     border-radius:3px;
     height: 20px;
