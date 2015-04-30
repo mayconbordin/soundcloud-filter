@@ -32,6 +32,7 @@ var SoundCloudFilter = (function() {
         
             filterValue: new TextInput(html.find("#soundcloud-plus-search")),
             filterType: new TextInput(html.find("#soundcloud-plus-filter-type")),
+            filterOperator: new TextInput(html.find("#soundcloud-plus-filter-operator")),
             
             counterValue: new TextInput(html.find("#soundcloud-plus-counter"),
                 [Utils.sanitize, Utils.parseInt]),
@@ -123,6 +124,7 @@ var SoundCloudFilter = (function() {
             // watch for input changes
             view.filterValue.bind(filter, 'value');
             view.filterType.bind(filter, 'type');
+            view.filterOperator.bind(filter, 'operator');
             view.counterValue.bind(filter, 'counterValue');
             view.counterType.bind(filter, 'counterType');
             view.counterOperator.bind(filter, 'counterOperator');

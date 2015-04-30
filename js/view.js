@@ -13,8 +13,16 @@ var Template = {
             '<option value="title">Title</option>' +
             '<option value="user">User</option>' +
         '</select>' +
+        
+        '<select id="soundcloud-plus-filter-operator">' +
+            '<option value="exactly">exactly</option>' +
+            '<option value="at-least">at least</option>' +
+            '<option value="all-words">all words</option>' +
+            '<option value="any-word">any word</option>' +
+        '</select>' +
+        
         '<input id="soundcloud-plus-search" name="soundcloud-plus-search"/>' +
-        '<label>with</label>' +
+        '<label>|</label>' +
         
         '<select id="soundcloud-plus-counter-operator">' +
             '<option value="at-least">at least</option>' +
