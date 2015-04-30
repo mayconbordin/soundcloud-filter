@@ -50,6 +50,7 @@ var Template = {
             '<option value="title">Title</option>' +
             '<option value="user">User</option>' +
             '<option value="likes">Likes</option>' +
+            '<option value="date">Date</option>' +
             '<option value="comments">Comments</option>' +
             '<option value="reposts">Reposts</option>' +
         '</select>' +

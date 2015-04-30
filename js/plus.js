@@ -185,20 +185,25 @@ var SoundCloudFilter = (function() {
          * @return {object}
          */
         _trackInfo: function(track) {
+            track = $(track);
+            
+            var date = track.find(".sound__uploadTime time").attr("datetime");
+            
             var info = {
-                id         : $(track).find(".soundTitle__title").attr("href").hashCode(),
-                tag        : $(track).find(".soundTitle__tagContent").text(),
-                title      : $(track).find(".soundTitle__title").text().trim(),
-                user       : $(track).find(".soundTitle__username").text().trim(),
-                isRepost   : ($(track).find(".repostingUser").length > 0) ? true : false,
-                isTracklist: ($(track).find(".activity .playlist").length > 0) ? true : false,
+                id         : track.find(".soundTitle__title").attr("href").hashCode(),
+                tag        : track.find(".soundTitle__tagContent").text(),
+                title      : track.find(".soundTitle__title").text().trim(),
+                user       : track.find(".soundTitle__username").text().trim(),
+                date       : (date != null && date.length > 0) ? new Date(date) : null,
+                isRepost   : (track.find(".repostingUser").length > 0) ? true : false,
+                isTracklist: (track.find(".activity .playlist").length > 0) ? true : false,
                 plays      : 0,
                 likes      : 0,
                 reposts    : 0,
                 comments   : 0
             };
             
-            $(track).find(".sc-ministats-item").each(function(i, item) {
+            track.find(".sc-ministats-item").each(function(i, item) {
                 var cItem = $(item).children();
                 var stats = cItem.prop("class").replace(/sc-ministats|small|-/g, "").trim();
                 info[stats] = Utils.parseIntegerString(cItem.find("span").eq(1).text());
