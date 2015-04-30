@@ -4,7 +4,7 @@
     top: 46px;
     border-top: 1px solid #2a2a2a;
     background: #333;
-    height: 25px;
+    min-height: 25px;
     padding: 5px;
     width: 100%;
     
@@ -19,12 +19,14 @@
 #soundcloud-plus-bar .inner .left {
     float: left;
     height: 26px;
+    display: inline-block;
 }
 
 #soundcloud-plus-bar .inner .right {
     float: right;
     height: 26px;
     margin-right: 10px;
+    display: inline-block;
 }
 
 #soundcloud-plus-sort {
