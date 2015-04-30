@@ -7,10 +7,7 @@
  */
 var SoundCloudFilter = (function() {
     var store  = {};
-    var filter = new Filter();/*{
-        value: null, type: null, counterValue: null, counterType: null,
-        counterOperator: null, showReposts: null, showPlaylists: null
-    };*/
+    var filter = new Filter();
     var sorter = null;
     
     var hasFilter = false;
@@ -190,21 +187,6 @@ var SoundCloudFilter = (function() {
                 if ($(item).attr("class").indexOf("emptyTrack") != -1) return;
                 var info = self.getTrackInfo(item);
 
-                /*if (
-                    // no keyword or keyword inside track info field (filterType)
-                    (filter.value == null || info[filter.type].toLowerCase().indexOf(filter.value.toLowerCase()) != -1)
-                    
-                    // no counter or track counter within counter value and operation
-                    && (filter.counterValue == null || (
-                        (filter.counterOperator == 'at-least' && info[filter.counterType] >= filter.counterValue) ||
-                        (filter.counterOperator == 'at-most' && info[filter.counterType] <= filter.counterValue)
-                    ))
-                    
-                    // include or not reposts and playlists
-                    && (filter.showReposts == true || info.isRepost == false)
-                    && (filter.showPlaylists == true || info.isTracklist == false)
-                ) {*/
-                
                 if (filter.match(info)) {
                     hits++;
                 } else {
