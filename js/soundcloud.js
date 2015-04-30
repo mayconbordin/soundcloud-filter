@@ -334,7 +334,7 @@ TrackInfo.fromHtml = function(li) {
     track.title       = li.find(".soundTitle__title").text().trim();
     track.user        = li.find(".soundTitle__username").text().trim();
     track.date        = (date != null && date.length > 0) ? new Date(date) : null;
-    track.isRepost    = (li.find(".repostingUser").length > 0) ? true : false;
+    track.isRepost    = (li.find(".sc-ministats-reposts").length > 0) ? true : false;
     track.isTracklist = (li.find(".activity .playlist").length > 0) ? true : false;
     track.plays       = 0;
     track.likes       = 0;
@@ -346,7 +346,7 @@ TrackInfo.fromHtml = function(li) {
         var stats = cItem.prop("class").replace(/sc-ministats|small|-/g, "").trim();
         track[stats] = Utils.parseIntegerString(cItem.find("span").eq(1).text());
     });
-    
+
     return track;
 };
 
