@@ -13,7 +13,8 @@
                 "js/jquery.autocomplete.min.js",
                 "js/helpers.js",
                 "js/view.js",
-                "js/filter.js"
+                "js/filter.js",
+                "js/soundcloud.js"
             ],
             "css": ["css/plus.css"]
         }

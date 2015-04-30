@@ -97,7 +97,9 @@ TextInput.prototype.bind = function(obj, fieldName) {
 };
 
 TextInput.prototype.updateValue = function() {
-    this.bindObject[this.bindField] = this.getValue();
+    var value = this.getValue();
+    Log.info("Updating value of bind object field '", this.bindField, "' to '", value, "'");
+    this.bindObject[this.bindField] = value;
 };
 
 TextInput.prototype.getValue = function() {
@@ -127,13 +129,14 @@ CheckBox.prototype.bind = function(obj, fieldName) {
     this.updateValue();
     
     this.html.change(function(e) {
-        Log.info('Value of field '+fieldName+' changed to '+value);
         self.updateValue();
     });
 };
 
 CheckBox.prototype.updateValue = function() {
-    this.bindObject[this.bindField] = this.getValue();
+    var value = this.getValue();
+    Log.info("Updating value of bind object field '", this.bindField, "' to '", value, "'");
+    this.bindObject[this.bindField] = value;
 };
 
 CheckBox.prototype.getValue = function() {
