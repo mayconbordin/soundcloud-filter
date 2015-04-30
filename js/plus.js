@@ -20,8 +20,18 @@ var SoundCloudFilter = (function() {
     var view = null;
     
     var loadView = function() {
+        function detectListElement() {
+            var targets = [".lazyLoadingList__list", ".soundList"];
+            
+            for (i=0; i<targets.length; i++) {
+                var list = $(targets[i]);
+                if (list.length > 0)
+                    return list[0];
+            }
+        }
+    
         return {
-            list: $(".lazyLoadingList__list")[0],
+            list: detectListElement(),
         
             filterValue: new TextInput(html.find("#soundcloud-plus-search")),
             filterType: new TextInput(html.find("#soundcloud-plus-filter-type")),
@@ -67,8 +77,32 @@ var SoundCloudFilter = (function() {
     };
     
     return {
+        hasTracks: function() {
+            return (
+                ($(".soundList__item").length > 0 || $(".searchList__item").length > 0)
+                &&
+                $(".userStream__list").length == 0
+            );
+        },
+        
+        getTracks: function() {
+            var targets = [".soundList__item", ".searchList__item"];
+            
+            for (i=0; i<targets.length; i++) {
+                var items = $(targets[i]);
+                if (items.length > 0) {
+                    return items;
+                }
+            }
+        },
+        
         initialize: function() {
             var self = this;
+            
+            if (!this.hasTracks()) {
+                Log.info("This page has no tracks to filter");
+                return;
+            }
             
             // load view variables
             view = loadView();
@@ -137,7 +171,7 @@ var SoundCloudFilter = (function() {
             
             var hits = 0;
     
-            $(".soundList__item").each(function(i, item) {
+            this.getTracks().each(function(i, item) {
                 if ($(item).attr("class").indexOf("emptyTrack") != -1) return;
                 var info = self.getTrackInfo(item);
 
@@ -292,7 +326,7 @@ var SoundCloudFilter = (function() {
             var self = this;
             Log.info("sortStream: ", sorter);
 
-            var tracks = $(".soundList__item");
+            var tracks = this.getTracks();
             tracks.detach();
             
             tracks.sort(function(a, b) {

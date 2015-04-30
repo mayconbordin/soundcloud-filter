@@ -5,7 +5,9 @@
     "manifest_version": 2,
     "content_scripts": [
         {
-            "matches": ["http://soundcloud.com/stream","https://soundcloud.com/stream"],
+            "matches": [
+                "*://soundcloud.com/*"
+            ],
             "js": [
                 "js/jquery.min.js",
                 "js/jquery.autocomplete.min.js",

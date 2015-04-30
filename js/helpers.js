@@ -36,7 +36,7 @@ var Utils = {
         if (numStr == null || numStr.trim().length == 0)
             return 0;
         
-        numStr = numStr.trim().replace(",", "");
+        numStr = numStr.trim().replace(/,/gi, "");
         numStr = numStr.replace(/K|M|G/gi, function(x) {
             if (x == 'K') return '000';
             else if (x == 'M') return '000000';
