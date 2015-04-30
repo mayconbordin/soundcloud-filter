@@ -36,7 +36,8 @@ var SoundCloudFilter = (function() {
             filterValue: new TextInput(html.find("#soundcloud-plus-search")),
             filterType: new TextInput(html.find("#soundcloud-plus-filter-type")),
             
-            counterValue: new TextInput(html.find("#soundcloud-plus-counter"), [Utils.sanitize, Utils.parseInt]),
+            counterValue: new TextInput(html.find("#soundcloud-plus-counter"),
+                [Utils.sanitize, Utils.parseInt]),
             counterType: new TextInput(html.find("#soundcloud-plus-counter-type")),
             counterOperator: new TextInput(html.find("#soundcloud-plus-counter-operator")),
             
@@ -77,6 +78,10 @@ var SoundCloudFilter = (function() {
     };
     
     return {
+        /**
+         * Check if the page has tracks to be filtered.
+         * @return {boolean}
+         */
         hasTracks: function() {
             return (
                 ($(".soundList__item").length > 0 || $(".searchList__item").length > 0)
@@ -85,6 +90,10 @@ var SoundCloudFilter = (function() {
             );
         },
         
+        /**
+         * Get the list of tracks of the page.
+         * @return {array}
+         */
         getTracks: function() {
             var targets = [".soundList__item", ".searchList__item"];
             
@@ -341,12 +350,24 @@ var SoundCloudFilter = (function() {
             });
             
             $(view.list).append(tracks);
+        },
+        
+        disable: function() {
+            html.find("input, select, button").prop("disabled", true);
+        },
+        
+        enable: function() {
+            html.find("input, select, button").prop("disabled", false);
         }
     };
 })();
 
-
-// start plug-in
-$(document).ready(function() {
-    SoundCloudFilter.initialize();
-});
+var timer = setInterval(function() {
+    if (SoundCloudFilter.hasTracks()) {
+        Log.info("Tracks loaded, initializing the filter bar.");
+        clearInterval(timer);
+        SoundCloudFilter.initialize();
+    } else {
+        Log.info("Waiting for tracks to load...");
+    }
+}, 500);
