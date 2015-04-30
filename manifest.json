@@ -1,7 +1,7 @@
 {
     "name":"SoundCloud Filter",
     "description":"Filter options to SoundCloud",
-    "version":"1.4.0",
+    "version":"1.4.1",
     "manifest_version": 2,
     "content_scripts": [
         {
