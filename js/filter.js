@@ -18,8 +18,10 @@ Filter.prototype = {
     _matchFilterValue: function(info) {
         if (this.value == null) return true;
         
-        var trackValue = info[this.type].toLowerCase();
-        var value = this.value.toLowerCase();
+        // get the track value for the field being filtered
+        var trackValue = info[this.type].toLowerCase().trim();
+        // and the value in the filter bar
+        var value = this.value.toLowerCase().trim();
         
         if (this.operator == 'exactly')
             return this._hasExactly(value, trackValue);
@@ -29,6 +31,12 @@ Filter.prototype = {
             return this._hasAllWords(value, trackValue);
         else if (this.operator == 'any-word')
             return this._hasAnyWord(value, trackValue);
+        else if (this.operator == 'not-exactly')
+            return this._hasNotExactly(value, trackValue);
+        else if (this.operator == 'not-any-word')
+            return this._hasNotAnyWord(value, trackValue);
+        else if (this.operator == 'not-all-words')
+            return this._hasNotAllWords(value, trackValue);
         
         return false;
     },
@@ -63,6 +71,16 @@ Filter.prototype = {
         return false;
     },
     
+    _hasNotAnyWord: function(filterValue, trackValue) {
+        var words = filterValue.split(" ");
+        
+        for (i=0; i<words.length; i++)
+            if (trackValue.indexOf(words[i]) != -1)
+                return false;
+                
+        return true;
+    },
+    
     _hasAllWords: function(filterValue, trackValue) {
         var words = filterValue.split(" ");
         trackWords = trackValue.split(" ");
@@ -74,8 +92,25 @@ Filter.prototype = {
         return true;
     },
     
+    _hasNotAllWords: function(filterValue, trackValue) {
+        var words = filterValue.split(" ");
+        trackWords = trackValue.split(" ");
+        var matchCount = 0;
+        
+        for (i=0; i<words.length; i++)
+            if (trackWords.indexOf(words[i]) != -1)
+                matchCount++;
+                
+        return (matchCount != words.length);
+    },
+    
     _hasExactly: function(filterValue, trackValue) {
         return filterValue == trackValue;
+    },
+    
+    _hasNotExactly: function(filterValue, trackValue) {
+        console.log(filterValue, trackValue);
+        return filterValue != trackValue;
     },
     
     _hasAtLeast: function(filterValue, trackValue) {

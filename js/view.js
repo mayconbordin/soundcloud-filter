@@ -19,6 +19,9 @@ var Template = {
             '<option value="at-least">at least</option>' +
             '<option value="all-words">all words</option>' +
             '<option value="any-word">any word</option>' +
+            '<option value="not-exactly">not exactly</option>' +
+            '<option value="not-all-words">not all words</option>' +
+            '<option value="not-any-word">not any word</option>' +
         '</select>' +
         
         '<input id="soundcloud-plus-search" name="soundcloud-plus-search"/>' +
