@@ -109,7 +109,6 @@ Filter.prototype = {
     },
     
     _hasNotExactly: function(filterValue, trackValue) {
-        console.log(filterValue, trackValue);
         return filterValue != trackValue;
     },
     
